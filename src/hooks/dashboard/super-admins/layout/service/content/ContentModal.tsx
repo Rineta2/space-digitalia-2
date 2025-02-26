@@ -76,40 +76,55 @@ export const ContentModal: React.FC<ContentModalProps> = ({
                                 {/* Right Column - Image Upload */}
                                 <div className="space-y-8">
                                     {/* Image Preview */}
-                                    {(selectedImage || formData.imageUrl) && (
-                                        <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-gray-100">
-                                            <Image
-                                                src={selectedImage ? URL.createObjectURL(selectedImage) : formData.imageUrl}
-                                                alt="Content preview"
-                                                fill
-                                                className="object-cover"
-                                            />
+                                    {(selectedImage || formData.imageUrl) ? (
+                                        <div className="space-y-4">
+                                            <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-gray-100">
+                                                <Image
+                                                    src={selectedImage ? URL.createObjectURL(selectedImage) : formData.imageUrl}
+                                                    alt="Content preview"
+                                                    fill
+                                                    className="object-cover"
+                                                />
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setSelectedImage(null);
+                                                    setFormData({ ...formData, imageUrl: '' });
+                                                }}
+                                                className="text-red-600 hover:text-red-700 text-sm font-medium flex items-center gap-2"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                                Remove image
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        /* Upload Input */
+                                        <div className="flex items-center justify-center w-full">
+                                            <label className="w-full flex flex-col items-center px-4 py-6 bg-white rounded-xl border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-50 transition-colors duration-200">
+                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                    <svg className="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                    </svg>
+                                                    <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                                                    <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                                                </div>
+                                                <input
+                                                    type="file"
+                                                    className="hidden"
+                                                    onChange={(e) => {
+                                                        const file = e.target.files?.[0];
+                                                        if (file) {
+                                                            setSelectedImage(file);
+                                                        }
+                                                    }}
+                                                    accept="image/*"
+                                                />
+                                            </label>
                                         </div>
                                     )}
-
-                                    {/* Upload Input */}
-                                    <div className="flex items-center justify-center w-full">
-                                        <label className="w-full flex flex-col items-center px-4 py-6 bg-white rounded-xl border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-50 transition-colors duration-200">
-                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                <svg className="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                                </svg>
-                                                <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                                <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
-                                            </div>
-                                            <input
-                                                type="file"
-                                                className="hidden"
-                                                onChange={(e) => {
-                                                    const file = e.target.files?.[0];
-                                                    if (file) {
-                                                        setSelectedImage(file);
-                                                    }
-                                                }}
-                                                accept="image/*"
-                                            />
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
 
@@ -146,40 +161,58 @@ export const ContentModal: React.FC<ContentModalProps> = ({
                                         </div>
 
                                         {/* Profile Image Preview */}
-                                        {(selectedProfileImage || formData.profile.image) && (
-                                            <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-gray-100">
-                                                <Image
-                                                    src={selectedProfileImage ? URL.createObjectURL(selectedProfileImage) : formData.profile.image}
-                                                    alt="Profile preview"
-                                                    fill
-                                                    className="object-cover"
-                                                />
+                                        {(selectedProfileImage || formData.profile.image) ? (
+                                            <div className="space-y-4">
+                                                <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-gray-100">
+                                                    <Image
+                                                        src={selectedProfileImage ? URL.createObjectURL(selectedProfileImage) : formData.profile.image}
+                                                        alt="Profile preview"
+                                                        fill
+                                                        className="object-cover"
+                                                    />
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setSelectedProfileImage(null);
+                                                        setFormData({
+                                                            ...formData,
+                                                            profile: { ...formData.profile, image: '' }
+                                                        });
+                                                    }}
+                                                    className="text-red-600 hover:text-red-700 text-sm font-medium flex items-center gap-2"
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                    Remove profile image
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            /* Profile Image Upload */
+                                            <div className="flex items-center justify-center w-full">
+                                                <label className="w-full flex flex-col items-center px-4 py-6 bg-white rounded-xl border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-50 transition-colors duration-200">
+                                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                        <svg className="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                        </svg>
+                                                        <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Upload profile image</span></p>
+                                                        <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                                                    </div>
+                                                    <input
+                                                        type="file"
+                                                        className="hidden"
+                                                        onChange={(e) => {
+                                                            const file = e.target.files?.[0];
+                                                            if (file) {
+                                                                setSelectedProfileImage(file);
+                                                            }
+                                                        }}
+                                                        accept="image/*"
+                                                    />
+                                                </label>
                                             </div>
                                         )}
-
-                                        {/* Profile Image Upload */}
-                                        <div className="flex items-center justify-center w-full">
-                                            <label className="w-full flex flex-col items-center px-4 py-6 bg-white rounded-xl border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-50 transition-colors duration-200">
-                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                    <svg className="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                                    </svg>
-                                                    <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Upload profile image</span></p>
-                                                    <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
-                                                </div>
-                                                <input
-                                                    type="file"
-                                                    className="hidden"
-                                                    onChange={(e) => {
-                                                        const file = e.target.files?.[0];
-                                                        if (file) {
-                                                            setSelectedProfileImage(file);
-                                                        }
-                                                    }}
-                                                    accept="image/*"
-                                                />
-                                            </label>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -44,8 +44,8 @@ export const menuItems = [
     label: "Accounts",
     href: "/dashboard/super-admins/accounts",
     subItems: [
-      { label: "Admins", href: "/dashboard/super-admins/admins" },
-      { label: "User", href: "/dashboard/super-admins/user" },
+      { label: "Admins", href: "/dashboard/super-admins/accounts/admins" },
+      { label: "User", href: "/dashboard/super-admins/accounts/user" },
     ],
   },
 

@@ -24,6 +24,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<UserAccount | null>(null);
     const [loading, setLoading] = useState(true);
+    const [showInactiveModal, setShowInactiveModal] = useState(false);
     const router = useRouter();
 
     const getDashboardUrl = (userRole: string) => {
@@ -75,6 +76,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 throw new Error('User account not found');
             }
 
+            // Check if user account is inactive
+            if (!userData.isActive) {
+                setShowInactiveModal(true);
+                await signOut(auth);
+                return userData; // Return userData but don't proceed with login
+            }
+
             setUser(userData);
             const welcomeMessage = getWelcomeMessage(userData);
             toast.success(welcomeMessage);
@@ -83,11 +91,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             return userData;
         } catch (error) {
             if (error instanceof Error) {
-                toast.error('Login gagal: ' + error.message);
-                throw new Error('Login gagal: ' + error.message);
+                // Check if the error is due to disabled account
+                if (error.message.includes('auth/user-disabled')) {
+                    setShowInactiveModal(true);
+                } else {
+                    toast.error('Login gagal: ' + error.message);
+                }
+            } else {
+                toast.error('Terjadi kesalahan saat login');
             }
-            toast.error('Terjadi kesalahan saat login');
-            throw new Error('Terjadi kesalahan saat login');
+            throw error;
         }
     };
 
@@ -102,8 +115,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
             });
             toast.success('Anda berhasil logout');
-        } catch (error) {
-            console.error('Logout error:', error);
+        } catch {
             toast.error('Terjadi kesalahan saat logout');
         }
     };
@@ -135,7 +147,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             toast.success('Akun berhasil dihapus');
             router.push('/');
         } catch (error) {
-            console.error('Delete account error:', error);
             toast.error(error instanceof Error ? error.message : 'Gagal menghapus akun');
             throw error;
         }
@@ -191,6 +202,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 userData = userDoc.data() as UserAccount;
             }
 
+            // Check if user account is inactive
+            if (!userData.isActive) {
+                setShowInactiveModal(true);
+                await signOut(auth);
+                return userData; // Return userData but don't proceed with login
+            }
+
             setUser(userData);
             const welcomeMessage = getWelcomeMessage(userData);
             toast.success(welcomeMessage);
@@ -198,8 +216,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
             return userData;
         } catch (error) {
-            console.error('Google login error:', error);
-            toast.error('Gagal login dengan Google');
+            // Check if the error is due to disabled account
+            if (error instanceof Error && error.message.includes('auth/user-disabled')) {
+                setShowInactiveModal(true);
+            } else {
+                toast.error('Gagal login dengan Google');
+            }
             throw error;
         }
     };
@@ -230,7 +252,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 duration: 2000
             });
         } catch (error) {
-            console.error('Registration error:', error);
             if (error instanceof Error) {
                 if (error.message.includes('auth/email-already-in-use')) {
                     toast.error('Email already in use. Please use a different email.');
@@ -254,8 +275,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 } else {
                     setUser(null);
                 }
-            } catch (error) {
-                console.error("Error fetching user data:", error);
+            } catch {
                 setUser(null);
             } finally {
                 setLoading(false);
@@ -274,7 +294,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         deleteAccount,
         hasRole,
         getDashboardUrl,
-        register
+        register,
+        showInactiveModal,
+        setShowInactiveModal
     };
     return (
         <AuthContext.Provider value={value as AuthContextType}>

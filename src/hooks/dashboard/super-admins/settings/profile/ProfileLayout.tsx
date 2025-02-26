@@ -20,11 +20,13 @@ import { format } from 'date-fns';
 
 import { id } from 'date-fns/locale';
 
-import ProfileSkelaton from '@/hooks/dashboard/super-admins/settings/profile/ProjectSkelaton';
+import ProfileSkelaton from '@/hooks/dashboard/super-admins/settings/profile/ProfileSkelaton';
 
 import { UserAccount } from "@/utils/context/interface/Auth";
 
 import { FiUser } from 'react-icons/fi';
+
+import { motion } from 'framer-motion';
 
 type TimestampType = {
     seconds: number;
@@ -179,171 +181,206 @@ export default function ProfileContent() {
     }
 
     return (
-        <section className="py-2 md:py-10 min-h-screen">
-            <div className="container">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-                    <div className="flex flex-col gap-2">
-                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+        <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="min-h-full px-0 sm:px-4"
+        >
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8"
+            >
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div className="space-y-1">
+                        <h1 className='text-2xl sm:text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent'>
                             Profil Saya
                         </h1>
-                        <p className="text-sm text-gray-600">
-                            Kelola informasi profil Anda untuk mengontrol, melindungi dan mengamankan akun
-                        </p>
+                        <p className='text-gray-500'>Kelola informasi profil Anda untuk mengontrol, melindungi dan mengamankan akun</p>
                     </div>
 
                     {!isEditing && (
                         <button
                             onClick={handleEdit}
-                            className="w-full sm:w-auto px-6 py-2.5 bg-blue-600 text-white rounded-xl 
-                            hover:bg-blue-700 transition-all duration-300 font-medium shadow-sm 
-                            hover:shadow-blue-100 hover:shadow-lg active:transform active:scale-95"
+                            className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-sm hover:shadow-indigo-100 hover:shadow-lg transform hover:-translate-y-0.5"
                         >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
                             Edit Profil
                         </button>
                     )}
                 </div>
+            </motion.div>
 
-                <div className="bg-white rounded-3xl shadow-xl shadow-gray-100/50 p-6 sm:p-8">
-                    <form onSubmit={handleSubmit}>
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            {/* Left side - Profile Image */}
-                            <div className="flex flex-col items-center space-y-6 order-1 lg:order-2">
-                                <div className="relative w-40 h-40 sm:w-48 sm:h-48 group">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="bg-white rounded-3xl shadow-lg border border-gray-100/20 backdrop-blur-xl p-8"
+            >
+                <form onSubmit={handleSubmit}>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                        {/* Left side - Profile Image */}
+                        <motion.div
+                            whileHover={{ scale: 1.02 }}
+                            transition={{ type: "spring", stiffness: 300 }}
+                            className="flex flex-col items-center space-y-8 order-1 lg:order-2"
+                        >
+                            <div className="relative group">
+                                <div className="w-48 h-48 rounded-full overflow-hidden ring-4 ring-indigo-50 shadow-xl">
                                     {profile.photoURL ? (
                                         <Image
                                             src={profile.photoURL}
                                             alt="Profile"
                                             width={500}
                                             height={500}
-                                            className="rounded-3xl object-cover shadow-lg w-full h-full 
-                                            transition-transform duration-300 group-hover:scale-105"
+                                            className="object-cover w-full h-full transition duration-300 group-hover:scale-110"
                                         />
                                     ) : (
-                                        <div className="w-full h-full rounded-3xl bg-slate-100 flex items-center justify-center 
-                                        shadow-lg transition-transform duration-300 group-hover:scale-105">
-                                            <FiUser className="w-20 h-20 text-slate-500" />
+                                        <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+                                            <FiUser className="w-16 h-16 text-gray-400" />
                                         </div>
                                     )}
-                                </div>
-                                <div className="text-center w-full">
-                                    {isEditing && (
-                                        <>
-                                            <input
-                                                type="file"
-                                                accept="image/*"
-                                                onChange={handleImageUpload}
-                                                className="hidden"
-                                                id="profile-image-upload"
-                                                disabled={uploadingImage}
-                                            />
-                                            <label
-                                                htmlFor="profile-image-upload"
-                                                className="inline-block cursor-pointer px-6 py-2.5 bg-gray-50 text-gray-700 
-                                                rounded-xl hover:bg-gray-100 transition-all duration-300 font-medium 
-                                                border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md
-                                                active:transform active:scale-95"
-                                            >
-                                                {uploadingImage ? 'Mengupload...' : 'Ubah Foto'}
-                                            </label>
-                                        </>
-                                    )}
-                                    <p className="text-sm text-gray-500 mt-3">
-                                        Ukuran gambar: maks. 1 MB
-                                        <br />
-                                        Format gambar: JPEG, PNG
-                                    </p>
                                 </div>
                             </div>
+                            <div className="text-center w-full">
+                                {isEditing && (
+                                    <>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleImageUpload}
+                                            className="hidden"
+                                            id="profile-image-upload"
+                                            disabled={uploadingImage}
+                                        />
+                                        <label
+                                            htmlFor="profile-image-upload"
+                                            className="inline-flex items-center gap-2 px-6 py-3 bg-white text-indigo-600 
+                                                rounded-xl hover:bg-indigo-50 transition-all duration-300 font-medium 
+                                                border-2 border-indigo-100 hover:border-indigo-200 shadow-sm
+                                                active:scale-95"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            {uploadingImage ? 'Mengupload...' : 'Ubah Foto'}
+                                        </label>
+                                    </>
+                                )}
+                                <p className="text-sm text-gray-500 mt-4">
+                                    Ukuran gambar: maks. 1 MB
+                                    <br />
+                                    Format gambar: JPEG, PNG
+                                </p>
+                            </div>
+                        </motion.div>
 
-                            {/* Right side - Form Fields */}
-                            <div className="lg:col-span-2 order-2 lg:order-1">
-                                <div className="space-y-6">
-                                    {/* Form fields */}
-                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-y-4 sm:items-center p-4 
-                                    hover:bg-gray-50 rounded-2xl transition-colors duration-200">
-                                        <label className="text-sm font-medium text-gray-700">Nama</label>
-                                        <div className="sm:col-span-2">
-                                            {isEditing ? (
+                        {/* Right side - Form Fields */}
+                        <div className="lg:col-span-2 order-2 lg:order-1">
+                            <div className="space-y-6">
+                                {[
+                                    {
+                                        label: 'Nama',
+                                        name: 'displayName',
+                                        value: isEditing ? editedProfile?.displayName : profile.displayName,
+                                        type: 'text'
+                                    },
+                                    {
+                                        label: 'Email',
+                                        value: profile.email,
+                                        readOnly: true
+                                    },
+                                    {
+                                        label: 'Nomor Telepon',
+                                        name: 'phoneNumber',
+                                        value: isEditing ? editedProfile?.phoneNumber : (profile.phoneNumber || '-'),
+                                        type: 'tel'
+                                    },
+                                    {
+                                        label: 'Status Akun',
+                                        value: profile.isActive ? 'Aktif' : 'Tidak Aktif',
+                                        isStatus: true
+                                    },
+                                    {
+                                        label: 'Member Sejak',
+                                        value: formatTimestamp(profile.createdAt),
+                                        readOnly: true
+                                    }
+                                ].map((field, index) => (
+                                    <motion.div
+                                        key={index}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ duration: 0.3, delay: index * 0.1 }}
+                                        whileHover={{ scale: 1.02 }}
+                                        className="group p-6 bg-gray-50/50 rounded-2xl hover:bg-white transition duration-300 
+                                            hover:shadow-lg hover:shadow-gray-100/50 border border-gray-100"
+                                    >
+                                        <label className="text-sm font-medium text-gray-600 block mb-2">{field.label}</label>
+                                        <div className="mt-1">
+                                            {field.isStatus ? (
+                                                <div className="flex items-center gap-2">
+                                                    <div className={`w-2.5 h-2.5 rounded-full ${profile.isActive ?
+                                                        'bg-green-500' : 'bg-red-500'}`}>
+                                                    </div>
+                                                    <p className="text-gray-800 text-lg">{field.value}</p>
+                                                </div>
+                                            ) : isEditing && !field.readOnly ? (
                                                 <input
-                                                    type="text"
-                                                    name="displayName"
-                                                    value={editedProfile?.displayName || ''}
+                                                    type={field.type}
+                                                    name={field.name}
+                                                    value={field.value || ''}
                                                     onChange={handleChange}
-                                                    className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 
-                                                    focus:ring-blue-500 focus:border-blue-500 transition-all duration-200
-                                                    hover:border-blue-400"
+                                                    className="w-full p-3 bg-white border-2 border-gray-200 rounded-xl focus:ring-2 
+                                                        focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200
+                                                        hover:border-indigo-300"
+                                                    placeholder={`Masukkan ${field.label}`}
                                                 />
                                             ) : (
-                                                <p className="text-gray-800 font-medium">{profile.displayName}</p>
+                                                <p className="text-gray-800 text-lg">{field.value}</p>
                                             )}
                                         </div>
-                                    </div>
+                                    </motion.div>
+                                ))}
 
-                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-y-4 sm:items-center p-4 
-                                    hover:bg-gray-50 rounded-2xl transition-colors duration-200">
-                                        <label className="text-sm font-medium text-gray-700">Email</label>
-                                        <div className="sm:col-span-2">
-                                            <p className="text-gray-800">{profile.email}</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-y-4 sm:items-center p-4 
-                                    hover:bg-gray-50 rounded-2xl transition-colors duration-200">
-                                        <label className="text-sm font-medium text-gray-700">Nomor Telepon</label>
-                                        <div className="sm:col-span-2">
-                                            {isEditing ? (
-                                                <input
-                                                    type="tel"
-                                                    name="phoneNumber"
-                                                    value={editedProfile?.phoneNumber || ''}
-                                                    onChange={handleChange}
-                                                    className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 
-                                                    focus:ring-blue-500 focus:border-blue-500 transition-all duration-200
-                                                    hover:border-blue-400"
-                                                    placeholder="Contoh: 08123456789"
-                                                />
-                                            ) : (
-                                                <p className="text-gray-800">{profile.phoneNumber || '-'}</p>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-y-4 sm:items-center p-4 
-                                    hover:bg-gray-50 rounded-2xl transition-colors duration-200">
-                                        <label className="text-sm font-medium text-gray-700">Member Sejak</label>
-                                        <div className="sm:col-span-2">
-                                            <p className="text-gray-800">{formatTimestamp(profile.createdAt)}</p>
-                                        </div>
-                                    </div>
-
-                                    {isEditing && (
-                                        <div className="mt-8 flex flex-col sm:flex-row justify-end gap-4">
-                                            <button
-                                                type="button"
-                                                onClick={handleCancel}
-                                                className="px-6 py-2.5 border border-gray-300 rounded-xl hover:bg-gray-50 
-                                                transition-all duration-300 font-medium active:transform active:scale-95"
-                                                disabled={isSaving}
-                                            >
-                                                Batal
-                                            </button>
-                                            <button
-                                                type="submit"
-                                                className="px-6 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 
-                                                transition-all duration-300 font-medium shadow-sm hover:shadow-lg
-                                                hover:shadow-blue-100 active:transform active:scale-95"
-                                                disabled={isSaving}
-                                            >
-                                                {isSaving ? 'Menyimpan...' : 'Simpan'}
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
+                                {isEditing && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="mt-8 flex flex-col sm:flex-row justify-end gap-4"
+                                    >
+                                        <button
+                                            type="button"
+                                            onClick={handleCancel}
+                                            className="px-8 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 
+                                                transition-all duration-300 font-medium border-2 border-gray-200 
+                                                hover:border-gray-300 active:scale-95"
+                                            disabled={isSaving}
+                                        >
+                                            Batal
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            className="px-8 py-3 bg-gradient-to-r from-indigo-600 to-indigo-500 text-white 
+                                                rounded-xl hover:from-indigo-700 hover:to-indigo-600 transition-all duration-300 
+                                                font-medium shadow-lg shadow-indigo-100 hover:shadow-indigo-200 
+                                                active:scale-95 disabled:opacity-70"
+                                            disabled={isSaving}
+                                        >
+                                            {isSaving ? 'Menyimpan...' : 'Simpan'}
+                                        </button>
+                                    </motion.div>
+                                )}
                             </div>
                         </div>
-                    </form>
-                </div>
-            </div>
-        </section>
+                    </div>
+                </form>
+            </motion.div>
+        </motion.section>
     );
 }

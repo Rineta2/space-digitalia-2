@@ -16,8 +16,8 @@ export const handleImageUpload = async (file: File) => {
     const base64 = await base64Promise;
     const result = await imagekitInstance.upload({
       file: base64,
-      fileName: `featured${Date.now()}`,
-      folder: "/featured",
+      fileName: `service${Date.now()}`,
+      folder: "/service",
     });
 
     return result.url;

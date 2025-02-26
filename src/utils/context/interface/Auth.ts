@@ -16,7 +16,7 @@ export interface UserAccount {
   createdAt: Date;
 }
 
-export type AuthContextType = {
+export interface AuthContextType {
   user: UserAccount | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<UserAccount>;
@@ -31,7 +31,9 @@ export type AuthContextType = {
     displayName: string,
     phone: string
   ) => Promise<void>;
-};
+  showInactiveModal: boolean;
+  setShowInactiveModal: (show: boolean) => void;
+}
 
 export interface FirebaseUser {
   uid: string;
