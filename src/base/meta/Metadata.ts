@@ -77,14 +77,14 @@ export const metadata = {
   icons: {
     icon: [
       {
-        url: "/icon.jpg",
+        url: "/icon.png",
         sizes: "64x64 32x32 24x24 16x16",
         type: "image/x-icon",
       },
     ],
-    apple: "/icon.jpg",
-    shortcut: "/icon.jpg",
-    appleTouchIcon: "/icon.jpg",
+    apple: "/icon.png",
+    shortcut: "/icon.png",
+    appleTouchIcon: "/icon.png",
   },
 
   manifest: "/manifest.json",
@@ -107,7 +107,7 @@ export const metadata = {
     locale: "id_ID",
     images: [
       {
-        url: "/icon.jpg",
+        url: "/icon.png",
         width: 1920,
         height: 1080,
         alt: "Icon for Space Digitalia",
@@ -121,7 +121,7 @@ export const metadata = {
     description: "Space Digitalia",
     creator: "@rizki_ramadhan",
     site: "@rizki_ramadhan",
-    images: ["/icon.jpg"],
+    images: ["/icon.png"],
   },
 
   verification: {

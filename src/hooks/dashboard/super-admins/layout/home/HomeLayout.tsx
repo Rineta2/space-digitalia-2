@@ -20,8 +20,11 @@ import { HomeContent } from '@/hooks/dashboard/super-admins/layout/home/lib/home
 
 export default function HomeLayout() {
     const [isLoading, setIsLoading] = useState(true)
+
     const [contents, setContents] = useState<HomeContent[]>([])
+
     const [selectedImage, setSelectedImage] = useState<File | null>(null)
+
     const [formData, setFormData] = useState<HomeContent>({
         title: '',
         description: '',
@@ -29,9 +32,13 @@ export default function HomeLayout() {
         button2: { text: '', link: '' },
         imageUrl: ''
     })
+
     const [isEditing, setIsEditing] = useState(false)
+
     const [editingId, setEditingId] = useState<string | null>(null)
+
     const [isSubmitting, setIsSubmitting] = useState(false)
+
     const [deleteId, setDeleteId] = useState<string | null>(null)
 
     // Fetch data

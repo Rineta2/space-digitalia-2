@@ -8,15 +8,23 @@ export default function FeaturedSkelaton() {
                     <div key={index} className='flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-4 rounded-lg'>
                         {/* Image skeleton */}
                         <div className="w-full max-w-14 sm:w-auto sm:max-w-20">
-                            <div className='w-full aspect-square bg-gray-200 animate-pulse rounded-md' />
+                            <div className='w-full aspect-square bg-gray-200 rounded-md relative overflow-hidden'>
+                                <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200"></div>
+                            </div>
                         </div>
 
                         {/* Content skeleton */}
                         <div className="flex flex-col gap-2 w-full">
-                            <div className='h-5 bg-gray-200 rounded animate-pulse w-3/4' />
+                            <div className='h-5 bg-gray-200 rounded relative overflow-hidden w-3/4'>
+                                <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200"></div>
+                            </div>
                             <div className='space-y-2'>
-                                <div className='h-3 bg-gray-200 rounded animate-pulse w-full' />
-                                <div className='h-3 bg-gray-200 rounded animate-pulse w-5/6' />
+                                <div className='h-3 bg-gray-200 rounded relative overflow-hidden w-full'>
+                                    <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200"></div>
+                                </div>
+                                <div className='h-3 bg-gray-200 rounded relative overflow-hidden w-5/6'>
+                                    <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200"></div>
+                                </div>
                             </div>
                         </div>
                     </div>

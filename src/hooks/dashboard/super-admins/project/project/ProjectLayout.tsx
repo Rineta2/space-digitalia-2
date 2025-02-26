@@ -22,7 +22,7 @@ import { useAuth } from '@/utils/context/AuthContext'
 
 import { useRouter } from 'next/navigation'
 
-import { Project, ProjectType, LicenseProject, LicenseDetail } from '@/hooks/dashboard/super-admins/project/project/lib/schema'
+import { Project, ProjectType, LicenseProject, LicenseDetail, FormInputs } from '@/hooks/dashboard/super-admins/project/project/lib/schema'
 
 import { format } from 'date-fns'
 
@@ -31,20 +31,6 @@ import { id } from 'date-fns/locale'
 import { Pagination } from '@/base/helper/Pagination'
 
 import { useForm } from 'react-hook-form'
-
-interface FormInputs {
-    title: string;
-    description: string;
-    slug: string;
-    typeCategory: string;
-    typeTitle: string;
-    status: string;
-    content: string;
-    stock: number;
-    licenseTitle: string;
-    licenseDetails: LicenseDetail[];
-    linkPreview: string;
-}
 
 export default function ProjectLayout() {
     const { user, hasRole } = useAuth()
@@ -60,7 +46,7 @@ export default function ProjectLayout() {
     const [projects, setProjects] = useState<Project[]>([])
     const [projectTypes, setProjectTypes] = useState<ProjectType[]>([])
     const [licenseProjects, setLicenseProjects] = useState<LicenseProject[]>([])
-    const [isLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [newProject, setNewProject] = useState<Project>({
         title: '',
@@ -121,9 +107,23 @@ export default function ProjectLayout() {
 
     // Fetch projects and types
     useEffect(() => {
-        fetchProjects()
-        fetchProjectTypes()
-        fetchLicenseProjects()
+        const fetchData = async () => {
+            try {
+                setIsLoading(true)
+                await Promise.all([
+                    fetchProjects(),
+                    fetchProjectTypes(),
+                    fetchLicenseProjects()
+                ])
+            } catch (error) {
+                console.error('Error fetching data:', error)
+                toast.error('Failed to load data')
+            } finally {
+                setIsLoading(false)
+            }
+        }
+
+        fetchData()
     }, [])
 
     const fetchProjects = async () => {
@@ -143,8 +143,8 @@ export default function ProjectLayout() {
             })
 
             setProjects(sortedProjects)
-        } catch {
-            toast.error('Failed to fetch projects')
+        } catch (error) {
+            throw error // Let the parent handler deal with the error
         }
     }
 
@@ -175,7 +175,6 @@ export default function ProjectLayout() {
         }
     }
 
-    // Add this function for slug generation
     const generateSlug = (title: string) => {
         return title
             .toLowerCase()
@@ -206,7 +205,6 @@ export default function ProjectLayout() {
         }
     })
 
-    // Update the watch effect for title/slug
     useEffect(() => {
         const subscription = watch((value, { name }) => {
             if (name === 'title' && value.title) {
@@ -346,7 +344,6 @@ export default function ProjectLayout() {
         deleteModal?.showModal()
     }
 
-    // Update confirmDelete function
     const confirmDelete = async () => {
         if (!projectToDelete) return
 
@@ -407,7 +404,6 @@ export default function ProjectLayout() {
         reset()
     }
 
-    // Update renderAuthorField to include default icon
     const renderAuthorField = () => (
         <div className="bg-gray-50/50 p-6 rounded-2xl space-y-6 border border-gray-100">
             <div className="flex items-center gap-2 mb-2">
@@ -455,7 +451,6 @@ export default function ProjectLayout() {
         </div>
     )
 
-    // Update handleLicenseDetailChange function
     const handleLicenseDetailChange = (index: number, field: keyof LicenseDetail, value: string | number) => {
         const updatedDetails = [...newProject.licenseDetails];
         updatedDetails[index] = {

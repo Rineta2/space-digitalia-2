@@ -50,7 +50,7 @@ export interface FormInputs {
   slug: string;
   typeCategory: string;
   typeTitle: string;
-  status: "active" | "inactive";
+  status: string;
   content: string;
   stock: number;
   licenseTitle: string;
