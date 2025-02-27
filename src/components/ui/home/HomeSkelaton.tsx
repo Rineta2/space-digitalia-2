@@ -3,14 +3,14 @@ import React from 'react'
 export default function HomeSkelaton() {
     return (
         <section className='min-h-screen relative bg-gradient-to-br from-white via-blue-50 to-blue-100 overflow-hidden mt-[0] xl:mt-[-8rem]'>
-            {/* Glass-morphism background elements */}
+            {/* Enhanced glass-morphism background elements to match Home.tsx */}
             <div className='absolute -z-10 inset-0'>
-                <div className='absolute top-1/4 left-1/3 w-72 h-72 bg-blue-300/20 rounded-full blur-3xl'></div>
-                <div className='absolute bottom-1/3 right-1/4 w-96 h-96 bg-purple-300/20 rounded-full blur-3xl'></div>
-                <div className='absolute top-1/2 left-1/2 w-64 h-64 bg-pink-300/20 rounded-full blur-3xl'></div>
+                <div className='absolute top-1/4 left-1/3 w-96 h-96 bg-blue-300/20 rounded-full blur-[100px] animate-pulse'></div>
+                <div className='absolute bottom-1/3 right-1/4 w-[30rem] h-[30rem] bg-purple-300/20 rounded-full blur-[100px] animate-pulse delay-700'></div>
+                <div className='absolute top-1/2 left-1/2 w-80 h-80 bg-pink-300/20 rounded-full blur-[100px] animate-pulse delay-1000'></div>
             </div>
 
-            <div className='container mx-auto px-4 xl:px-10 relative z-10'>
+            <div className='container mx-auto px-4 xl:px-10 relative z-10 py-12 lg:py-20'>
                 <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center'>
                     <div className='flex flex-col gap-6 lg:gap-8 items-center text-center xl:text-start xl:items-start'>
                         {/* Title skeleton */}

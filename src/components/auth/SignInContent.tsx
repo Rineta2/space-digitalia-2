@@ -23,7 +23,7 @@ import { signInSchema, type SignInFormData } from '@/components/auth/lib/auth'
 import { useAuth } from '@/utils/context/AuthContext'
 
 export default function SignInContent() {
-    const { login, loginWithGoogle, showInactiveModal, setShowInactiveModal } = useAuth()
+    const { login, loginWithGoogle, loginWithGithub, showInactiveModal, setShowInactiveModal } = useAuth()
     const [isLoading, setIsLoading] = useState(false)
 
     // Add useEffect to handle body scroll
@@ -61,6 +61,15 @@ export default function SignInContent() {
         try {
             setIsLoading(true)
             await loginWithGoogle()
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const handleGithubSignIn = async () => {
+        try {
+            setIsLoading(true)
+            await loginWithGithub()
         } finally {
             setIsLoading(false)
         }
@@ -219,7 +228,7 @@ export default function SignInContent() {
                                     <div className='flex justify-center gap-4'>
                                         <button
                                             type="button"
-                                            onClick={() => { }} // TODO: Implement GitHub login if needed
+                                            onClick={handleGithubSignIn}
                                             className='p-3 hover:bg-gray-50 rounded-lg transition-colors'
                                         >
                                             <Image src={githubIcon} alt='github icon' className='w-6 h-6' />

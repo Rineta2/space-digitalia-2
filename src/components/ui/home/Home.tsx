@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from 'react'
 
-import { FetchHome } from './lib/FetchHome'
+import { FetchHome } from '@/components/ui/home/lib/FetchHome'
 
-import HomeSkelaton from './HomeSkelaton'
+import HomeSkelaton from '@/components/ui/home/HomeSkelaton'
 
-import { HomeType } from './lib/schema'
+import { HomeType } from '@/components/ui/home/lib/schema'
 
 import Link from 'next/link'
 
@@ -35,37 +35,38 @@ export default function Home() {
 
     return (
         <section className='min-h-screen relative bg-gradient-to-br from-white via-blue-50 to-blue-100 overflow-hidden mt-[0] xl:mt-[-8rem]'>
-            {/* Glass-morphism background elements */}
+            {/* Enhanced glass-morphism background elements */}
             <div className='absolute -z-10 inset-0'>
-                <div className='absolute top-1/4 left-1/3 w-72 h-72 bg-blue-300/20 rounded-full blur-3xl'></div>
-                <div className='absolute bottom-1/3 right-1/4 w-96 h-96 bg-purple-300/20 rounded-full blur-3xl'></div>
-                <div className='absolute top-1/2 left-1/2 w-64 h-64 bg-pink-300/20 rounded-full blur-3xl'></div>
+                <div className='absolute top-1/4 left-1/3 w-96 h-96 bg-blue-300/20 rounded-full blur-[100px] animate-pulse'></div>
+                <div className='absolute bottom-1/3 right-1/4 w-[30rem] h-[30rem] bg-purple-300/20 rounded-full blur-[100px] animate-pulse delay-700'></div>
+                <div className='absolute top-1/2 left-1/2 w-80 h-80 bg-pink-300/20 rounded-full blur-[100px] animate-pulse delay-1000'></div>
             </div>
 
-            <div className='container mx-auto px-4 xl:px-10 relative z-10'>
+            <div className='container mx-auto px-4 xl:px-10 relative z-10 py-12 lg:py-20'>
                 <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center'>
                     {home.map((item) => (
-                        <div key={item.id} className='flex flex-col gap-6 lg:gap-8 items-center text-center xl:text-start xl:items-start'>
-                            <h1 className='text-4xl md:text-5xl lg:text-6xl font-bold leading-tight bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent'>
+                        <div key={item.id} className='flex flex-col gap-8 lg:gap-10 items-center text-center lg:text-start lg:items-start transform transition-all duration-500 hover:translate-y-[-5px]'>
+                            <h1 className='text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-gray-900 bg-clip-text text-transparent'
+                                style={{ lineHeight: '1.2' }}>
                                 {item.title}
                             </h1>
 
-                            <p className='text-lg text-gray-600/90 leading-relaxed'>
+                            <p className='text-lg md:text-xl text-gray-600/90 leading-relaxed max-w-2xl'>
                                 {item.description}
                             </p>
 
-                            <div className='flex gap-4 sm:gap-6 mt-4'>
+                            <div className='flex flex-col sm:flex-row gap-4 sm:gap-6 mt-4 w-full sm:w-auto'>
                                 <Link
                                     href={item.button1.link}
-                                    className='group relative px-8 py-4 rounded-full bg-blue-600 text-white font-semibold overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/20 w-fit'
+                                    className='group relative px-8 py-4 rounded-full bg-blue-600 text-white font-semibold overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/30 hover:scale-105 w-full sm:w-fit'
                                 >
                                     <span className='relative z-10'>{item.button1.text}</span>
-                                    <div className='absolute inset-0 bg-blue-700 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300'></div>
+                                    <div className='absolute inset-0 bg-gradient-to-r from-blue-700 to-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300'></div>
                                 </Link>
 
                                 <Link
                                     href={item.button2.link}
-                                    className='group px-8 py-4 rounded-full border-2 border-blue-600 text-blue-600 font-semibold transition-all duration-300 hover:bg-blue-50/50 hover:shadow-xl hover:shadow-blue-500/10 hover:scale-[1.02] w-fit'
+                                    className='group px-8 py-4 rounded-full border-2 border-blue-600 text-blue-600 font-semibold transition-all duration-300 hover:bg-blue-50/80 hover:shadow-2xl hover:shadow-blue-500/20 hover:scale-105 backdrop-blur-sm w-full sm:w-fit'
                                 >
                                     {item.button2.text}
                                 </Link>
@@ -90,11 +91,11 @@ export default function Home() {
                 </div>
             </div>
 
-            <div className='absolute bottom-0 right-0 opacity-30 transform hover:opacity-40 transition-opacity duration-300'>
+            <div className='absolute bottom-0 right-0 opacity-20 transform hover:opacity-30 transition-opacity duration-500 animate-float'>
                 <Image src={vector1} alt='vector-1' />
             </div>
 
-            <div className='absolute bottom-[-10rem] left-0 opacity-30 transform hover:opacity-40 transition-opacity duration-300'>
+            <div className='absolute bottom-[-10rem] left-0 opacity-20 transform hover:opacity-30 transition-opacity duration-500 animate-float-delayed'>
                 <Image src={vector2} alt='vector-2' />
             </div>
         </section>

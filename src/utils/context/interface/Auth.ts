@@ -21,6 +21,7 @@ export interface AuthContextType {
   loading: boolean;
   login: (email: string, password: string) => Promise<UserAccount>;
   loginWithGoogle: () => Promise<UserAccount>;
+  loginWithGithub: () => Promise<UserAccount>;
   logout: () => Promise<void>;
   deleteAccount: () => Promise<void>;
   hasRole: (roles: string | string[]) => boolean;
