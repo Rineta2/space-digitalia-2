@@ -54,25 +54,22 @@ export default function Service() {
     }
 
     return (
-        <section className='min-h-full px-4 xl:px-12 py-12 sm:py-16 xl:py-24 bg-gradient-to-b from-white via-gray-50 to-white'>
-            <div className="container">
+        <section className='min-h-full px-4 xl:px-16 py-16 sm:py-24 xl:py-32'>
+            <div className="container mx-auto max-w-7xl">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8 }}
-                    className="flex flex-col gap-4 sm:gap-6 items-center justify-center mb-16 text-center"
+                    className="flex items-center justify-center mb-20 text-center"
                 >
-                    <h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold max-w-3xl bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-blue-600 to-gray-900'>
-                        Lorem Ipsum is simply dummy text of the printing.
+                    <h1 className='text-3xl sm:text-4xl md:text-5xl font-bold max-w-4xl bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-blue-600 to-violet-600 leading-tight'>
+                        Solusi Web & Aplikasi yang Membawa Perubahan
                     </h1>
-                    <p className='text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl leading-relaxed px-4'>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s
-                    </p>
                 </motion.div>
 
-                <div className="flex flex-col gap-10 relative">
-                    <div className="absolute left-[50px] top-[60px] h-[calc(100%-120px)] w-full hidden md:block">
+                <div className="flex flex-col gap-16 sm:gap-32 relative">
+                    <div className="absolute left-[50px] top-[130px] h-[calc(100%-120px)] w-full hidden md:block z-[-1]">
                         <svg
                             className="absolute top-0 left-0 h-full w-full"
                             viewBox="0 0 1000 1000"
@@ -154,42 +151,46 @@ export default function Service() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-100px" }}
                             transition={{ duration: 0.8, delay: 0.2 }}
-                            className={`flex flex-col md:flex-row items-center gap-8 md:gap-16 relative service-section
+                            className={`flex flex-col md:flex-row items-center gap-12 md:gap-20 relative service-section z-10
                             ${index % 2 === 1 ? 'md:flex-row-reverse' : ''}`}
                             data-index={index}
                         >
-                            <div className="flex-1 flex flex-col gap-6 md:gap-8">
+                            <div className="flex-1 flex flex-col gap-8 md:gap-10">
                                 <motion.div
                                     whileHover={{ scale: 1.02 }}
-                                    className='flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center p-4 sm:p-6 bg-white rounded-2xl sm:rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100'
+                                    className='group flex flex-col sm:flex-row gap-6 items-start sm:items-center p-6 sm:p-8 bg-white/80 backdrop-blur-sm'
                                 >
                                     <Image
                                         src={item.profile.image}
                                         alt={item.profile.title}
-                                        width={80}
-                                        height={80}
-                                        className='w-16 h-16 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl object-cover shadow-md'
+                                        width={100}
+                                        height={100}
+                                        className='w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover'
                                     />
                                     <div>
-                                        <h3 className='font-bold text-lg sm:text-xl mb-1 sm:mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800'>
+                                        <h3 className='font-bold text-xl sm:text-2xl mb-2 sm:mb-3 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-600'>
                                             {item.profile.title}
                                         </h3>
-                                        <p className='text-sm sm:text-base text-gray-600'>{item.profile.text}</p>
+                                        <p className='text-base sm:text-lg text-gray-600'>{item.profile.text}</p>
                                     </div>
                                 </motion.div>
 
-                                <h1 className='font-bold text-2xl sm:text-3xl md:text-4xl leading-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600'>
+                                <h1 className='font-bold text-3xl sm:text-4xl md:text-5xl leading-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600'>
                                     {item.title}
                                 </h1>
-                                <p className='text-base sm:text-lg text-gray-600 leading-relaxed'>{item.description}</p>
+                                <p className='text-lg sm:text-xl text-gray-600 leading-relaxed'>{item.description}</p>
                             </div>
 
-                            <motion.div className="flex-1 w-full">
+                            <motion.div
+                                className="flex-1 w-full"
+                                whileHover={{ scale: 1.02 }}
+                                transition={{ duration: 0.3 }}
+                            >
                                 <Image
                                     src={item.imageUrl}
                                     alt={item.title}
-                                    width={600}
-                                    height={600}
+                                    width={800}
+                                    height={800}
                                     className='w-full h-auto'
                                 />
                             </motion.div>

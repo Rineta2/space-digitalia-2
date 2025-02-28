@@ -40,16 +40,6 @@ export const menuItems = [
   },
 
   {
-    icon: RiAdminFill,
-    label: "Accounts",
-    href: "/dashboard/super-admins/accounts",
-    subItems: [
-      { label: "Admins", href: "/dashboard/super-admins/accounts/admins" },
-      { label: "User", href: "/dashboard/super-admins/accounts/user" },
-    ],
-  },
-
-  {
     icon: GiCardboardBoxClosed,
     label: "Project",
     href: "/dashboard/super-admins/project",
@@ -58,6 +48,7 @@ export const menuItems = [
       { label: "Category", href: "/dashboard/super-admins/project/category" },
       { label: "Type", href: "/dashboard/super-admins/project/type" },
       { label: "Licence", href: "/dashboard/super-admins/project/license" },
+      { label: "Framework", href: "/dashboard/super-admins/project/framework" },
     ],
   },
 
@@ -69,6 +60,16 @@ export const menuItems = [
       { label: "Daftar Article", href: "/dashboard/super-admins/article" },
       { label: "Category", href: "/dashboard/super-admins/article/category" },
       { label: "Tags", href: "/dashboard/super-admins/article/tags" },
+    ],
+  },
+
+  {
+    icon: RiAdminFill,
+    label: "Accounts",
+    href: "/dashboard/super-admins/accounts",
+    subItems: [
+      { label: "Admins", href: "/dashboard/super-admins/accounts/admins" },
+      { label: "User", href: "/dashboard/super-admins/accounts/user" },
     ],
   },
 
