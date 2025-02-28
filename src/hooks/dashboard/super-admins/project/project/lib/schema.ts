@@ -31,6 +31,10 @@ export interface Project {
   licenseTitle: string;
   licenseDetails: LicenseDetail[];
   linkPreview?: string;
+  frameworks: {
+    title: string;
+    imageUrl: string;
+  }[];
 }
 
 export interface ProjectType {
@@ -56,4 +60,14 @@ export interface FormInputs {
   licenseTitle: string;
   licenseDetails: LicenseDetail[];
   linkPreview: string;
+  frameworks: {
+    title: string;
+    imageUrl: string;
+  }[];
+}
+
+export interface Framework {
+  id: string;
+  title: string;
+  imageUrl: string;
 }

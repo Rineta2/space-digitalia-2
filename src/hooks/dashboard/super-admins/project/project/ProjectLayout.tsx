@@ -70,7 +70,8 @@ export default function ProjectLayout() {
             role: '',
             uid: '',
             photoURL: ''
-        }
+        },
+        frameworks: []
     })
     const [selectedImages, setSelectedImages] = useState<File[]>([])
     const [selectedThumbnail, setSelectedThumbnail] = useState<File | null>(null)
@@ -113,7 +114,8 @@ export default function ProjectLayout() {
                 await Promise.all([
                     fetchProjects(),
                     fetchProjectTypes(),
-                    fetchLicenseProjects()
+                    fetchLicenseProjects(),
+                    fetchFrameworks()
                 ])
             } catch (error) {
                 console.error('Error fetching data:', error)
@@ -201,7 +203,8 @@ export default function ProjectLayout() {
             stock: 0,
             licenseTitle: '',
             licenseDetails: [],
-            linkPreview: ''
+            linkPreview: '',
+            frameworks: []
         }
     })
 
@@ -261,7 +264,7 @@ export default function ProjectLayout() {
         }
     }
 
-    const uploadImage = async (file: File, type: 'thumbnail' | 'slider') => {
+    const uploadImage = async (file: File, type: 'thumbnail' | 'slider' | 'mobile') => {
         try {
             const compressedImage = await compressImage(file)
             const base64 = await new Promise((resolve) => {
@@ -276,8 +279,8 @@ export default function ProjectLayout() {
                 .slice(0, 10)
                 .join('-')
 
-            // Create folder path: projects/[limited-title-slug]/[thumbnails|sliders]
-            const folderPath = `projects/${folderSlug}/${type === 'thumbnail' ? 'thumbnails' : 'sliders'}`
+            // Create folder path based on type
+            const folderPath = `projects/${folderSlug}/${type === 'thumbnail' ? 'thumbnails' : type === 'slider' ? 'sliders' : 'mobile'}`
 
             // Generate unique filename with timestamp
             const timestamp = new Date().getTime()
@@ -325,6 +328,7 @@ export default function ProjectLayout() {
             setValue('stock', project.stock || 0);
             setValue('licenseTitle', project.licenseTitle || '');
             setValue('linkPreview', project.linkPreview || '');
+            setValue('frameworks', project.frameworks);
 
             const modal = document.getElementById('project_modal') as HTMLDialogElement | null
             modal?.showModal()
@@ -399,7 +403,8 @@ export default function ProjectLayout() {
                 role: '',
                 uid: '',
                 photoURL: ''
-            }
+            },
+            frameworks: []
         })
         reset()
     }
@@ -643,6 +648,49 @@ export default function ProjectLayout() {
     const handleDragStart = (e: React.DragEvent, index: number) => {
         setDraggedIndex(index);
         e.dataTransfer.effectAllowed = 'move';
+    };
+
+    // Add new state for frameworks
+    const [frameworks, setFrameworks] = useState<{ id: string; title: string; imageUrl: string; }[]>([]);
+
+    // Add fetchFrameworks function
+    const fetchFrameworks = async () => {
+        try {
+            const querySnapshot = await getDocs(collection(db, process.env.NEXT_PUBLIC_COLLECTIONS_FRAMEWORK_PROJECT as string));
+            const frameworksData = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                title: doc.data().title,
+                imageUrl: doc.data().imageUrl
+            }));
+            setFrameworks(frameworksData);
+        } catch {
+            toast.error('Failed to fetch frameworks');
+        }
+    };
+
+    const [selectedFrameworks, setSelectedFrameworks] = useState<{ id: string; title: string; imageUrl: string; }[]>([]);
+
+    // Add this function to handle framework selection
+    const toggleFramework = (framework: { id: string; title: string; imageUrl: string; }) => {
+        const isSelected = selectedFrameworks.some(f => f.id === framework.id);
+
+        if (isSelected) {
+            // Remove framework if already selected
+            const updatedFrameworks = selectedFrameworks.filter(f => f.id !== framework.id);
+            setSelectedFrameworks(updatedFrameworks);
+            setValue('frameworks', updatedFrameworks.map(f => ({
+                title: f.title,
+                imageUrl: f.imageUrl
+            })));
+        } else {
+            // Add framework if not selected
+            const updatedFrameworks = [...selectedFrameworks, framework];
+            setSelectedFrameworks(updatedFrameworks);
+            setValue('frameworks', updatedFrameworks.map(f => ({
+                title: f.title,
+                imageUrl: f.imageUrl
+            })));
+        }
     };
 
     if (isLoading) {
@@ -900,6 +948,112 @@ export default function ProjectLayout() {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Website Preview Section - Only show for website category */}
+                            {watch('typeCategory') === 'website' && (
+                                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <div className="p-2 bg-orange-50 rounded-lg">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-orange-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9" />
+                                            </svg>
+                                        </div>
+                                        <h4 className="font-semibold text-lg text-gray-900">Website Preview</h4>
+                                    </div>
+
+                                    {/* Link Preview Input */}
+                                    <div className="form-control">
+                                        <label className="text-sm font-medium text-gray-700 mb-1.5">Preview Link</label>
+                                        <div className="relative">
+                                            <input
+                                                type="url"
+                                                {...register('linkPreview')}
+                                                placeholder="https://example.com"
+                                                className="input input-bordered w-full bg-gray-50/50 border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all pl-10"
+                                            />
+                                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        {errors.linkPreview && (
+                                            <span className="text-red-500 text-sm mt-1">{errors.linkPreview.message}</span>
+                                        )}
+                                        <p className="text-xs text-gray-500 mt-1">Enter the URL where users can preview the website</p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Mobile Image & Framework Section - Only show for website category */}
+                            {watch('typeCategory') === 'website' && (
+                                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <div className="p-2 bg-orange-50 rounded-lg">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-orange-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                            </svg>
+                                        </div>
+                                        <h4 className="font-semibold text-lg text-gray-900">Mobile Preview & Framework</h4>
+                                    </div>
+                                    <div className="w-full">
+                                        {/* Framework Selection */}
+                                        <div className="form-control">
+                                            <label className="text-sm font-medium text-gray-700 mb-1.5">Frameworks</label>
+                                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-4">
+                                                {frameworks.map((framework) => {
+                                                    const isSelected = selectedFrameworks.some(f => f.id === framework.id);
+
+                                                    return (
+                                                        <div
+                                                            key={framework.id}
+                                                            onClick={() => toggleFramework(framework)}
+                                                            className={`relative cursor-pointer rounded-xl border-2 p-4 transition-all ${isSelected
+                                                                ? 'border-orange-500 bg-orange-50'
+                                                                : 'border-gray-200 hover:border-orange-300'
+                                                                }`}
+                                                        >
+                                                            <div className="flex flex-col items-center gap-3">
+                                                                <div className="relative w-12 h-12">
+                                                                    <Image
+                                                                        src={framework.imageUrl}
+                                                                        alt={framework.title}
+                                                                        fill
+                                                                        className="object-contain"
+                                                                    />
+                                                                </div>
+                                                                <span className="text-sm font-medium text-gray-700 text-center">
+                                                                    {framework.title}
+                                                                </span>
+                                                            </div>
+
+                                                            {/* Checkmark for selected frameworks */}
+                                                            {isSelected && (
+                                                                <div className="absolute top-2 right-2">
+                                                                    <div className="bg-orange-500 rounded-full p-1">
+                                                                        <svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            className="h-3 w-3 text-white"
+                                                                            viewBox="0 0 20 20"
+                                                                            fill="currentColor"
+                                                                        >
+                                                                            <path
+                                                                                fillRule="evenodd"
+                                                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                                                clipRule="evenodd"
+                                                                            />
+                                                                        </svg>
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Images & Stock */}
                             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
