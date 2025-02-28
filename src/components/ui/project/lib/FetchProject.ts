@@ -1,4 +1,11 @@
-import { collection, query, where, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  orderBy,
+  limit,
+} from "firebase/firestore";
 
 import { db } from "@/utils/firebase";
 
@@ -7,7 +14,9 @@ import { ProjectType } from "@/components/ui/project/lib/schema";
 export function FetchProject(callback: (service: ProjectType[]) => void) {
   const q = query(
     collection(db, process.env.NEXT_PUBLIC_COLLECTIONS_PROJECT as string),
-    where("createdAt", "!=", "")
+    where("createdAt", "!=", ""),
+    orderBy("createdAt", "desc"),
+    limit(10)
   );
 
   return onSnapshot(q, (snapshot) => {

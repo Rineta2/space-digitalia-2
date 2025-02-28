@@ -203,7 +203,12 @@ const ProjectCard = ({ project }: { project: ProjectType }) => {
                     exit={{ scale: 0.95, opacity: 0 }}
                     transition={{ type: "spring", duration: 0.5 }}
                     className="container mx-auto min-h-screen p-4 md:p-6 lg:p-8 flex items-center justify-center"
-                    onClick={e => e.stopPropagation()}
+                    onClick={(e) => {
+                        e.stopPropagation(); // Only stop propagation if clicking on the modal content
+                        if (e.target === e.currentTarget) {
+                            setIsModalOpen(false); // Close if clicking on the container padding
+                        }
+                    }}
                 >
                     <div className="relative w-full max-w-7xl bg-gradient-to-b from-gray-900/80 to-black/80 rounded-2xl shadow-2xl border border-gray-800/50 backdrop-blur-xl">
                         {/* URL Bar */}
